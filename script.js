@@ -195,9 +195,39 @@ if (document.getElementById('gasto_formulario')) {
     const inputCategoria = document.getElementById('gasto_categoria');
     const inputPagadoPor = document.getElementById('gasto_pagado_por');
     const botonSubmitFormulario = formularioGasto.querySelector('button[type="submit"]');
+    const contenedorParticipantes = document.getElementById('gasto_participantes_contenedor');
 
     const listaGastos = document.getElementById('lista_gastos');
     const resumenGastos = document.getElementById('resumen_gastos');
+
+    function renderizarSelectorParticipantes(participantesSeleccionados = []) {
+        if (!contenedorParticipantes) {
+            console.error("Contenedor de participantes no encontrado.");
+            return;
+        }
+
+        const todosLosUsuarios = getTodosLosNombresDeUsuarios(); // De auth.js
+        if (!todosLosUsuarios || todosLosUsuarios.length === 0) {
+            contenedorParticipantes.innerHTML = '<p>No hay usuarios registrados para seleccionar.</p>';
+            return;
+        }
+
+        let checkboxesHTML = '';
+        todosLosUsuarios.forEach(username => {
+            const isChecked = participantesSeleccionados.includes(username) ? 'checked' : '';
+            // Usar el nombre de usuario como ID y valor puede ser problemático si contienen caracteres especiales.
+            // Para un ejemplo simple, se mantiene, pero en producción se usaría un ID más robusto.
+            const checkboxId = `participante_${username.replace(/\s+/g, '_')}`; // Crear ID más seguro
+            checkboxesHTML += `
+                <div class="checkbox-item">
+                    <input type="checkbox" id="${checkboxId}" name="participantes" value="${escapeHTML(username)}" ${isChecked}>
+                    <label for="${checkboxId}">${escapeHTML(username)}</label>
+                </div>
+            `;
+        });
+        contenedorParticipantes.innerHTML = checkboxesHTML;
+    }
+
 
     function cargarGastos() {
         const gastosGuardados = localStorage.getItem(GASTOS_KEY);
@@ -227,38 +257,66 @@ if (document.getElementById('gasto_formulario')) {
         const pagadoPor = inputPagadoPor.value.trim();
         let cantidad = parseFloat(cantidadString);
 
+        const participantesSeleccionados = [];
+        document.querySelectorAll('#gasto_participantes_contenedor input[name="participantes"]:checked').forEach(checkbox => {
+            participantesSeleccionados.push(checkbox.value);
+        });
+
+        // Limpiar mensajes de error previos de participantes
+        const mensajeParticipantesEl = document.getElementById('gasto_mensaje_participantes');
+        if (mensajeParticipantesEl) {
+            mensajeParticipantesEl.textContent = '';
+            mensajeParticipantesEl.style.display = 'none';
+        }
+
         if (!descripcion) {
-            alert("Por favor, introduce una descripción para el gasto.");
+            alert("Por favor, introduce una descripción para el gasto."); // Se podría cambiar a mensaje inline también
             inputDescripcion.focus();
             return;
         }
         if (isNaN(cantidad) || cantidad <= 0) {
-            alert("Por favor, introduce una cantidad numérica positiva para el gasto.");
+            alert("Por favor, introduce una cantidad numérica positiva para el gasto."); // Se podría cambiar a mensaje inline
             inputCantidad.focus();
             return;
         }
         if (!pagadoPor) {
-            alert("Por favor, introduce quién pagó el gasto.");
+            alert("Por favor, introduce quién pagó el gasto (el que adelantó el dinero)."); // Se podría cambiar a mensaje inline
             inputPagadoPor.focus();
             return;
         }
+        if (participantesSeleccionados.length === 0) {
+            if (mensajeParticipantesEl) {
+                mensajeParticipantesEl.textContent = 'Por favor, selecciona al menos un participante para el gasto.';
+                mensajeParticipantesEl.style.display = 'block';
+            } else {
+                alert('Por favor, selecciona al menos un participante para el gasto (quiénes deben dividir el coste).');
+            }
+            return;
+        }
+
 
         if (idGastoEditandose !== null) {
-            // Modo Editar
             const indiceGasto = gastos.findIndex(g => g.id === idGastoEditandose);
             if (indiceGasto !== -1) {
-                gastos[indiceGasto] = { ...gastos[indiceGasto], descripcion, cantidad, categoria, pagadoPor };
+                gastos[indiceGasto] = {
+                    ...gastos[indiceGasto],
+                    descripcion,
+                    cantidad,
+                    categoria,
+                    pagadoPor,
+                    participantes: participantesSeleccionados // Añadir/actualizar participantes
+                };
             }
-            idGastoEditandose = null; // Salir del modo edición
+            idGastoEditandose = null;
             botonSubmitFormulario.textContent = 'Añadir Gasto';
         } else {
-            // Modo Añadir Nuevo Gasto
             const nuevoGasto = {
                 id: Date.now(),
                 descripcion,
                 cantidad,
                 categoria,
-                pagadoPor
+                pagadoPor,
+                participantes: participantesSeleccionados // Añadir participantes
             };
             gastos.push(nuevoGasto);
         }
@@ -267,6 +325,7 @@ if (document.getElementById('gasto_formulario')) {
         renderizarGastos();
         renderizarResumenGastos();
         formularioGasto.reset();
+        renderizarSelectorParticipantes(); // Resetear checkboxes de participantes
         inputDescripcion.focus();
     });
 
@@ -304,6 +363,12 @@ if (document.getElementById('gasto_formulario')) {
                     <span class="pagado_por">Pagado por: ${escapeHTML(gasto.pagadoPor)}</span>
                 </div>
             `;
+             if (gasto.participantes && gasto.participantes.length > 0) {
+                const participantesTexto = document.createElement('p');
+                participantesTexto.className = 'gasto_item_participantes';
+                participantesTexto.innerHTML = `<strong>Participantes:</strong> ${gasto.participantes.map(p => escapeHTML(p)).join(', ')}`;
+                divContenido.appendChild(participantesTexto); // Añadir al div de contenido
+            }
             li.appendChild(divContenido);
 
             const divBotones = document.createElement('div');
@@ -343,7 +408,8 @@ if (document.getElementById('gasto_formulario')) {
 
             idGastoEditandose = gastoAEditar.id;
             botonSubmitFormulario.textContent = 'Actualizar Gasto';
-            inputDescripcion.focus(); // Mover el foco al primer campo
+            renderizarSelectorParticipantes(gastoAEditar.participantes || []); // Pre-seleccionar
+            inputDescripcion.focus();
         }
     }
 
@@ -365,76 +431,168 @@ if (document.getElementById('gasto_formulario')) {
         });
     }
 
+    // Helper para formatear moneda
+    function formatCurrency(amount) {
+        return amount.toFixed(2).replace('.', ',') + '€';
+    }
+
     function renderizarResumenGastos() {
         if (!resumenGastos) {
             console.error("¡Elemento #resumen_gastos no encontrado para renderizar resumen!");
             return;
         }
-        resumenGastos.innerHTML = '';
+        resumenGastos.innerHTML = ''; // Limpiar completamente el contenido anterior
 
         if (gastos.length === 0) {
-            resumenGastos.innerHTML = '<p>El resumen de gastos y quién debe a quién se mostrará aquí.</p>';
+            resumenGastos.innerHTML = '<p>No hay gastos para resumir.</p>';
             return;
         }
 
-        let totalGastado = 0;
-        const pagadores = {};
+        const pagosPorPersona = {};     // { username: totalPagado }
+        const debePagarPorPersona = {}; // { username: totalQueDeberiaHaberPagado }
+        let totalGeneralGastado = 0;
 
-        gastos.forEach(gasto => {
-            totalGastado += gasto.cantidad;
-            const nombrePagador = escapeHTML(gasto.pagadoPor);
-            pagadores[nombrePagador] = (pagadores[nombrePagador] || 0) + gasto.cantidad;
+        const todosLosUsuariosDelViaje = getTodosLosNombresDeUsuarios(); // De auth.js
+
+        // Inicializar estructuras para todos los usuarios registrados
+        todosLosUsuariosDelViaje.forEach(usuario => {
+            pagosPorPersona[usuario] = 0;
+            debePagarPorPersona[usuario] = 0;
         });
 
+        // Procesar cada gasto
+        gastos.forEach(gasto => {
+            totalGeneralGastado += gasto.cantidad;
+
+            // Sumar a quién pagó el gasto
+            if (pagosPorPersona.hasOwnProperty(gasto.pagadoPor)) {
+                pagosPorPersona[gasto.pagadoPor] += gasto.cantidad;
+            } else {
+                // Esto podría pasar si el pagador ya no es un usuario registrado, o si el nombre tiene un typo.
+                // Por ahora, se registra el pago igualmente, pero podría no aparecer en el resumen final si no está en todosLosUsuariosDelViaje.
+                // O podríamos añadirlo a todosLosUsuariosDelViaje si no existe.
+                // Para este ejercicio, si el pagador no está en la lista de usuarios, se ignora su pago para la liquidación final
+                // aunque sí se contabiliza en el total general.
+                console.warn(`El pagador '${gasto.pagadoPor}' del gasto '${gasto.descripcion}' no está en la lista general de usuarios. Su pago se cuenta en el total pero no se liquidará individualmente si no es un usuario reconocido.`);
+                // Si se quisiera incluir de todas formas:
+                // if (!todosLosUsuariosDelViaje.includes(gasto.pagadoPor)) todosLosUsuariosDelViaje.push(gasto.pagadoPor);
+                // pagosPorPersona[gasto.pagadoPor] = (pagosPorPersona[gasto.pagadoPor] || 0) + gasto.cantidad;
+            }
+
+            // Distribuir el costo entre los participantes
+            if (gasto.participantes && gasto.participantes.length > 0) {
+                const costePorParticipanteEsteGasto = gasto.cantidad / gasto.participantes.length;
+                gasto.participantes.forEach(participante => {
+                    if (debePagarPorPersona.hasOwnProperty(participante)) {
+                        debePagarPorPersona[participante] += costePorParticipanteEsteGasto;
+                    } else {
+                        console.warn(`El participante '${participante}' del gasto '${gasto.descripcion}' no está en la lista general de usuarios. El coste no se le asignará individualmente si no es un usuario reconocido.`);
+                        // Si se quisiera incluir de todas formas:
+                        // if (!todosLosUsuariosDelViaje.includes(participante)) todosLosUsuariosDelViaje.push(participante);
+                        // debePagarPorPersona[participante] = (debePagarPorPersona[participante] || 0) + costePorParticipanteEsteGasto;
+                    }
+                });
+            } else {
+                // Fallback si no hay participantes: Asignar a todos los usuarios del viaje (o solo al pagador)
+                // La validación del formulario ahora exige al menos un participante, así que esto no debería ocurrir.
+                console.warn(`Gasto sin participantes: ${gasto.descripcion}. No se puede asignar a la liquidación de forma detallada.`);
+                // Opcional: dividir entre todos los usuarios del viaje
+                // const costePorParticipanteFallback = gasto.cantidad / todosLosUsuariosDelViaje.length;
+                // todosLosUsuariosDelViaje.forEach(usuario => {
+                //     debePagarPorPersona[usuario] += costePorParticipanteFallback;
+                // });
+            }
+        });
+
+        // Calcular balances
+        const balances = {};
+        todosLosUsuariosDelViaje.forEach(usuario => {
+            balances[usuario] = (pagosPorPersona[usuario] || 0) - (debePagarPorPersona[usuario] || 0);
+        });
+
+        // Determinar quién debe a quién
+        const deudores = []; // { nombre: 'user', cantidadDebe: X }
+        const acreedores = []; // { nombre: 'user', cantidadSeLeDebe: Y }
+
+        for (const usuario in balances) {
+            if (balances[usuario] < -0.005) { // Umbral pequeño para evitar errores de flotantes
+                deudores.push({ nombre: usuario, cantidadDebe: Math.abs(balances[usuario]) });
+            } else if (balances[usuario] > 0.005) {
+                acreedores.push({ nombre: usuario, cantidadSeLeDebe: balances[usuario] });
+            }
+        }
+
+        // Ordenar para optimizar (opcional pero bueno para consistencia)
+        deudores.sort((a, b) => b.cantidadDebe - a.cantidadDebe);
+        acreedores.sort((a, b) => b.cantidadSeLeDebe - a.cantidadSeLeDebe);
+
+        const transacciones = [];
+        let i = 0, j = 0;
+        while (i < deudores.length && j < acreedores.length) {
+            const deudor = deudores[i];
+            const acreedor = acreedores[j];
+            const cantidadTransferir = Math.min(deudor.cantidadDebe, acreedor.cantidadSeLeDebe);
+
+            if (cantidadTransferir > 0.005) { // Solo transferir si es una cantidad significativa
+                transacciones.push({ de: deudor.nombre, a: acreedor.nombre, cantidad: cantidadTransferir });
+                deudor.cantidadDebe -= cantidadTransferir;
+                acreedor.cantidadSeLeDebe -= cantidadTransferir;
+            }
+
+            if (deudor.cantidadDebe < 0.01) i++;
+            if (acreedor.cantidadSeLeDebe < 0.01) j++;
+        }
+
+        // === Display Results ===
         const divContenidoResumen = document.createElement('div');
 
-        const pTotal = document.createElement('p');
-        pTotal.innerHTML = `<strong>Total General de Gastos: &euro;${totalGastado.toFixed(2)}</strong>`;
-        divContenidoResumen.appendChild(pTotal);
+        const pTotalGeneral = document.createElement('p');
+        pTotalGeneral.innerHTML = `<strong>Total General de Gastos: ${formatCurrency(totalGeneralGastado)}</strong>`;
+        divContenidoResumen.appendChild(pTotalGeneral);
 
-        const pTituloPagadores = document.createElement('p');
-        pTituloPagadores.innerHTML = '<strong>Total Pagado por Persona:</strong>';
-        divContenidoResumen.appendChild(pTituloPagadores);
+        const h4Detalles = document.createElement('h4');
+        h4Detalles.textContent = 'Detalles por Persona:';
+        divContenidoResumen.appendChild(h4Detalles);
+        const ulDetalles = document.createElement('ul');
+        todosLosUsuariosDelViaje.forEach(usuario => {
+            const li = document.createElement('li');
+            const pagado = pagosPorPersona[usuario] || 0;
+            const deberia = debePagarPorPersona[usuario] || 0;
+            const bal = balances[usuario] || 0;
+            let claseBalance = '';
+            if (bal > 0.01) claseBalance = 'owed-amount';
+            if (bal < -0.01) claseBalance = 'owes-amount';
 
-        const ulPagadores = document.createElement('ul');
-        for (const persona in pagadores) {
-            const liPagador = document.createElement('li');
-            liPagador.textContent = `${persona}: &euro;${pagadores[persona].toFixed(2)}`;
-            ulPagadores.appendChild(liPagador);
-        }
-        divContenidoResumen.appendChild(ulPagadores);
+            li.innerHTML = `${escapeHTML(usuario)}: Pagó ${formatCurrency(pagado)}, Gasto asignado ${formatCurrency(deberia)}. <strong class="${claseBalance}">Balance: ${formatCurrency(bal)}</strong>`;
+            ulDetalles.appendChild(li);
+        });
+        divContenidoResumen.appendChild(ulDetalles);
 
-        const nombresPagadoresUnicos = Object.keys(pagadores);
-        if (nombresPagadoresUnicos.length > 0) {
-            const gastoMedioPorPersona = totalGastado / nombresPagadoresUnicos.length;
+        const h4Liquidacion = document.createElement('h4');
+        h4Liquidacion.textContent = 'Liquidación de Cuentas:';
+        divContenidoResumen.appendChild(h4Liquidacion);
 
-            const pTituloLiquidacion = document.createElement('p');
-            pTituloLiquidacion.innerHTML = `<strong>Detalles de Liquidación (División Equitativa):</strong><br>(Media por persona: &euro;${gastoMedioPorPersona.toFixed(2)} basado en ${nombresPagadoresUnicos.length} participante(s) que pagaron)`;
-            divContenidoResumen.appendChild(pTituloLiquidacion);
-
+        if (transacciones.length === 0) {
+            const pSaldado = document.createElement('p');
+            pSaldado.textContent = 'Todas las cuentas están saldadas o no se requieren transferencias.';
+            divContenidoResumen.appendChild(pSaldado);
+        } else {
             const ulLiquidacion = document.createElement('ul');
-            nombresPagadoresUnicos.forEach(persona => {
-                const cantidadPagadaPorPersona = pagadores[persona];
-                const diferencia = cantidadPagadaPorPersona - gastoMedioPorPersona;
-
-                const liLiquidacion = document.createElement('li');
-                if (diferencia > 0.01) {
-                    liLiquidacion.innerHTML = `${persona} pagó &euro;${cantidadPagadaPorPersona.toFixed(2)}, se le <span class="owed-amount">debe &euro;${diferencia.toFixed(2)}</span>.`;
-                } else if (diferencia < -0.01) {
-                    liLiquidacion.innerHTML = `${persona} pagó &euro;${cantidadPagadaPorPersona.toFixed(2)}, <span class="owes-amount">debe &euro;${Math.abs(diferencia).toFixed(2)}</span>.`;
-                } else {
-                    liLiquidacion.textContent = `${persona} pagó &euro;${cantidadPagadaPorPersona.toFixed(2)} y está saldado.`;
-                }
-                ulLiquidacion.appendChild(liLiquidacion);
+            transacciones.forEach(t => {
+                const li = document.createElement('li');
+                li.innerHTML = `${escapeHTML(t.de)} debe pagar ${formatCurrency(t.cantidad)} a ${escapeHTML(t.a)}`;
+                ulLiquidacion.appendChild(li);
             });
             divContenidoResumen.appendChild(ulLiquidacion);
         }
+
         resumenGastos.appendChild(divContenidoResumen);
     }
 
-    cargarGastos(); // Cargar gastos al inicio
-    renderizarGastos(); // Renderizar la lista inicial
-    renderizarResumenGastos(); // Renderizar el resumen inicial
+    cargarGastos();
+    renderizarSelectorParticipantes(); // Poblar checkboxes de participantes al inicio
+    renderizarGastos();
+    renderizarResumenGastos();
 }
 
 

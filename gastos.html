@@ -36,9 +36,17 @@
                             <option value="Otros">Otros</option>
                         </select>
                     </div>
+                    <div class="campo_formulario"> <!-- Envolver en clase para consistencia si es necesario -->
+                        <label for="gasto_participantes">Participantes en este gasto (quiénes dividen el coste):</label>
+                        <div id="gasto_participantes_contenedor" class="checkbox-group">
+                            <!-- Checkboxes will be populated by JavaScript -->
+                            <p>Cargando lista de usuarios...</p>
+                        </div>
+                        <p id="gasto_mensaje_participantes" class="mensaje-error" style="display:none; margin-top: 5px;"></p>
+                    </div>
                     <div>
-                        <label for="gasto_pagado_por">Pagado por:</label>
-                        <input type="text" id="gasto_pagado_por" name="gasto_pagado_por" placeholder="Introduce el nombre" required>
+                        <label for="gasto_pagado_por">Pagado por (quién adelantó el dinero):</label>
+                        <input type="text" id="gasto_pagado_por" name="gasto_pagado_por" placeholder="Introduce tu nombre de usuario" required>
                     </div>
                     <button type="submit">Añadir Gasto</button>
                 </form>

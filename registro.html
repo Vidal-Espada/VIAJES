@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div id="barra-navegacion-contenedor"></div>
+
+    <main>
+        <section id="registro_seccion">
+            <h1>Crear Nueva Cuenta</h1>
+            <form id="registro_formulario">
+                <div>
+                    <label for="registro_username">Nombre de usuario:</label>
+                    <input type="text" id="registro_username" name="username" required>
+                </div>
+                <div>
+                    <label for="registro_password">Contraseña:</label>
+                    <input type="password" id="registro_password" name="password" required minlength="6">
+                </div>
+                <div>
+                    <label for="registro_confirm_password">Confirmar Contraseña:</label>
+                    <input type="password" id="registro_confirm_password" name="confirm_password" required minlength="6">
+                </div>
+                <button type="submit">Registrarse</button>
+            </form>
+            <p id="registro_mensaje" class="mensaje-info" style="display:none;"></p>
+            <p class="centrado">¿Ya tienes cuenta? <a href="login.html">Inicia Sesión</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // La barra de navegación se renderiza desde auth.js
+            // La redirección si ya está logueado también la maneja auth.js
+
+            const registroForm = document.getElementById('registro_formulario');
+            const mensajeEl = document.getElementById('registro_mensaje');
+
+            if (registroForm) {
+                registroForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const username = document.getElementById('registro_username').value.trim();
+                    const password = document.getElementById('registro_password').value;
+                    const confirmPassword = document.getElementById('registro_confirm_password').value;
+
+                    mensajeEl.textContent = '';
+                    mensajeEl.className = 'mensaje-info'; // Reset class
+                    mensajeEl.style.display = 'none';
+
+
+                    if (!username || !password || !confirmPassword) {
+                        mensajeEl.textContent = 'Todos los campos son obligatorios.';
+                        mensajeEl.className = 'mensaje-error';
+                        mensajeEl.style.display = 'block';
+                        return;
+                    }
+
+                    if (password !== confirmPassword) {
+                        mensajeEl.textContent = 'Las contraseñas no coinciden.';
+                        mensajeEl.className = 'mensaje-error';
+                        mensajeEl.style.display = 'block';
+                        return;
+                    }
+
+                    // registrarUsuario es de auth.js
+                    const resultado = registrarUsuario(username, password);
+
+                    if (resultado.exito) {
+                        localStorage.setItem('mensaje_login', resultado.mensaje);
+                        window.location.href = 'login.html';
+                    } else {
+                        mensajeEl.textContent = resultado.mensaje;
+                        mensajeEl.className = 'mensaje-error';
+                        mensajeEl.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -24,7 +24,16 @@ function inicializarUsuarios() {
  */
 function getUsuarios() {
     const usuariosString = localStorage.getItem(USUARIOS_KEY);
-    return usuariosString ? JSON.parse(usuariosString) : [];
+    if (usuariosString) {
+        try {
+            const usuarios = JSON.parse(usuariosString);
+            return Array.isArray(usuarios) ? usuarios : [];
+        } catch (e) {
+            console.error("Error al parsear usuarios de localStorage:", e);
+            return []; // Devuelve array vacío si hay error de parseo
+        }
+    }
+    return []; // Devuelve array vacío si no hay nada en localStorage
 }
 
 /**
@@ -151,6 +160,38 @@ function cambiarPassword(username, oldPassword, newPassword) {
 
 // Inicializar usuarios al cargar el script
 inicializarUsuarios();
+
+/**
+ * Registra un nuevo usuario.
+ * @param {string} username
+ * @param {string} password
+ * @returns {{exito: boolean, mensaje: string}} Objeto con estado y mensaje.
+ */
+function registrarUsuario(username, password) {
+    const usuarios = getUsuarios();
+
+    if (usuarios.find(u => u.username === username)) {
+        return { exito: false, mensaje: 'El nombre de usuario ya existe. Por favor, elige otro.' };
+    }
+
+    if (password.length < 6) {
+        return { exito: false, mensaje: 'La contraseña debe tener al menos 6 caracteres.' };
+    }
+
+    usuarios.push({ username: username, password: password });
+    guardarUsuarios(usuarios);
+
+    return { exito: true, mensaje: '¡Registro exitoso! Ahora puedes iniciar sesión.' };
+}
+
+/**
+ * Obtiene una lista de todos los nombres de usuario registrados.
+ * @returns {string[]} Array de nombres de usuario.
+ */
+function getTodosLosNombresDeUsuarios() {
+    const usuarios = getUsuarios();
+    return usuarios.map(u => u.username);
+}
 
 // Lógica de protección de rutas / redirección
 // Se ejecutará en todas las páginas donde auth.js esté vinculado.

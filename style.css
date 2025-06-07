@@ -357,9 +357,49 @@ footer {
     background-color: #c0392b;
 }
 
+/* Estilos para el selector de participantes */
+.checkbox-group {
+    max-height: 150px; /* Altura máxima con scroll si hay muchos usuarios */
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+}
+.checkbox-group .checkbox-item {
+    display: block; /* Un checkbox por línea */
+    margin-bottom: 8px;
+}
+.checkbox-group .checkbox-item:last-child {
+    margin-bottom: 0;
+}
+.checkbox-group .checkbox-item label {
+    margin-left: 8px;
+    font-weight: normal; /* Sobrescribir el bold de labels generales de formulario */
+    color: #333;
+}
+.checkbox-group .checkbox-item input[type="checkbox"] {
+    width: auto; /* Resetear el width:100% de inputs generales */
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
 .gasto_item_contenido { /* Nuevo div para agrupar contenido textual */
     flex-grow: 1; /* Permite que este div ocupe el espacio, empujando los botones a la derecha si .gasto_item es flex row */
 }
+
+.gasto_item_participantes {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #eee;
+}
+.gasto_item_participantes strong {
+    color: #444;
+}
+
 
 .gasto_item_acciones {
     display: flex;
@@ -673,7 +713,8 @@ footer {
    ========================================= */
 
 #login_seccion,
-#perfil_seccion {
+#perfil_seccion,
+#registro_seccion { /* Añadir #registro_seccion a los estilos comunes de sección de formulario */
     max-width: 500px;
     margin: 20px auto;
     padding: 20px;
@@ -705,13 +746,15 @@ footer {
 
 #login_formulario div,
 #cambiar_username_formulario div,
-#cambiar_password_formulario div {
+#cambiar_password_formulario div,
+#registro_formulario div { /* Añadir #registro_formulario a los estilos comunes de div de formulario */
     margin-bottom: 15px;
 }
 
 #login_formulario label,
 #cambiar_username_formulario label,
-#cambiar_password_formulario label {
+#cambiar_password_formulario label,
+#registro_formulario label { /* Añadir #registro_formulario a los estilos comunes de label */
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
@@ -722,7 +765,9 @@ footer {
 #login_formulario input[type="password"],
 #cambiar_username_formulario input[type="text"],
 #cambiar_username_formulario input[type="password"],
-#cambiar_password_formulario input[type="password"] {
+#cambiar_password_formulario input[type="password"],
+#registro_formulario input[type="text"], /* Añadir #registro_formulario a los estilos comunes de input */
+#registro_formulario input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -733,6 +778,7 @@ footer {
 #login_formulario button[type="submit"],
 #cambiar_username_formulario button[type="submit"],
 #cambiar_password_formulario button[type="submit"],
+#registro_formulario button[type="submit"], /* Añadir #registro_formulario a los estilos comunes de botón */
 #boton_logout {
     background-color: #3498db;
     color: white;
@@ -791,6 +837,19 @@ footer {
     border-radius: 4px;
     text-align: center;
 }
+
+.centrado { /* Nueva clase para centrar texto y enlaces */
+    text-align: center;
+    margin-top: 15px;
+}
+.centrado a {
+    color: #3498db;
+    text-decoration: none;
+}
+.centrado a:hover {
+    text-decoration: underline;
+}
+
 
 /* =========================================
    General Element Styling (Body, Footer)

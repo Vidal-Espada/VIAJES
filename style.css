@@ -714,9 +714,10 @@ footer {
 
 #login_seccion,
 #perfil_seccion,
-#registro_seccion { /* Añadir #registro_seccion a los estilos comunes de sección de formulario */
+#registro_seccion,
+#admin_usuarios_seccion .formulario_estilizado { /* Aplicar estilos de formulario también al de admin */
     max-width: 500px;
-    margin: 20px auto;
+    margin: 30px auto; /* Aumentar margen para formularios principales */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;

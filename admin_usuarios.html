@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Usuarios - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="barra-navegacion-contenedor">
+        <!-- La barra de navegación se renderizará aquí por auth.js -->
+    </div>
+
+    <main class="contenedor_principal">
+        <section id="admin_usuarios_seccion" class="seccion_contenido">
+            <h1>Administración de Usuarios</h1>
+
+            <form id="form_crear_usuario_admin" class="formulario_estilizado">
+                <h2>Crear Nuevo Usuario</h2>
+                <p>Aquí el administrador podrá crear nuevas cuentas de usuario.</p>
+
+                <div class="campo_formulario">
+                    <label for="admin_nuevo_username">Nombre de usuario:</label>
+                    <input type="text" id="admin_nuevo_username" name="admin_nuevo_username" required>
+                </div>
+
+                <div class="campo_formulario">
+                    <label for="admin_nueva_password">Contraseña:</label>
+                    <input type="password" id="admin_nueva_password" name="admin_nueva_password" required minlength="6">
+                </div>
+
+                <div class="campo_formulario">
+                    <label for="admin_confirm_password">Confirmar Contraseña:</label>
+                    <input type="password" id="admin_confirm_password" name="admin_confirm_password" required minlength="6">
+                </div>
+
+                <button type="submit" class="boton_primario">Crear Usuario</button>
+
+                <p id="admin_mensaje_creacion" class="mensaje-info" style="display: none; margin-top: 15px;"></p>
+            </form>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // La barra de navegación y la guardia de ruta de auth.js ya se han ejecutado.
+
+            const formCrearUsuario = document.getElementById('form_crear_usuario_admin');
+            const nuevoUsernameEl = document.getElementById('admin_nuevo_username');
+            const nuevaPasswordEl = document.getElementById('admin_nueva_password');
+            const confirmPasswordEl = document.getElementById('admin_confirm_password');
+            const mensajeCreacionEl = document.getElementById('admin_mensaje_creacion');
+
+            if (!formCrearUsuario) {
+                console.error("El formulario de creación de usuario para admin no se encontró.");
+                return;
+            }
+
+            formCrearUsuario.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const username = nuevoUsernameEl.value.trim();
+                const password = nuevaPasswordEl.value;
+                const confirmPassword = confirmPasswordEl.value;
+
+                // Limpiar mensajes previos
+                mensajeCreacionEl.textContent = '';
+                mensajeCreacionEl.style.display = 'none';
+                mensajeCreacionEl.className = 'mensaje-info'; // Clase base
+
+                // Validación del lado del cliente
+                if (!username || !password || !confirmPassword) {
+                    mensajeCreacionEl.textContent = 'Todos los campos son obligatorios.';
+                    mensajeCreacionEl.className = 'mensaje-error';
+                    mensajeCreacionEl.style.display = 'block';
+                    return;
+                }
+
+                if (password.length < 6) {
+                    mensajeCreacionEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                    mensajeCreacionEl.className = 'mensaje-error';
+                    mensajeCreacionEl.style.display = 'block';
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    mensajeCreacionEl.textContent = 'Las contraseñas no coinciden.';
+                    mensajeCreacionEl.className = 'mensaje-error';
+                    mensajeCreacionEl.style.display = 'block';
+                    return;
+                }
+
+                // Llamar a registrarUsuario de auth.js
+                const resultado = registrarUsuario(username, password);
+
+                if (resultado.exito) {
+                    // Personalizar mensaje para el contexto admin
+                    mensajeCreacionEl.textContent = `Usuario '${username}' creado exitosamente.`;
+                    mensajeCreacionEl.className = 'mensaje-exito';
+                    formCrearUsuario.reset(); // Limpiar campos del formulario
+                } else {
+                    mensajeCreacionEl.textContent = resultado.mensaje;
+                    mensajeCreacionEl.className = 'mensaje-error';
+                }
+                mensajeCreacionEl.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -196,16 +196,36 @@ function getTodosLosNombresDeUsuarios() {
 // Lógica de protección de rutas / redirección
 // Se ejecutará en todas las páginas donde auth.js esté vinculado.
 (function() {
-    const PROTEGER_PAGINAS = ['index.html', 'gastos.html', 'disenar_itinerario.html', 'perfil.html'];
-    const paginaActual = window.location.pathname.split('/').pop() || 'index.html'; // Default to index.html if path is '/'
-
-    // Si estamos en una página protegida y no estamos logueados, redirigir a login.html
-    if (PROTEGER_PAGINAS.includes(paginaActual) && !isLoggedIn()) {
-        window.location.href = 'login.html';
+    const PROTEGER_PAGINAS_GENERALES = ['index.html', 'gastos.html', 'disenar_itinerario.html', 'perfil.html'];
+    const PAGINA_ADMIN = 'admin_usuarios.html';
+    const PAGINA_LOGIN = 'login.html';
+    // Obtener el nombre del archivo de la URL actual, o 'index.html' si es la raíz.
+    let paginaActual = window.location.pathname.split('/').pop();
+    if (paginaActual === '' || paginaActual === undefined) {
+        paginaActual = 'index.html';
     }
-    // Si estamos en login.html y ya estamos logueados, redirigir a index.html
-    else if (paginaActual === 'login.html' && isLoggedIn()) {
-        window.location.href = 'index.html';
+
+
+    const usuarioLogueado = isLoggedIn(); // boolean
+    const nombreUsuarioActual = getUsuarioActual(); // username string or null
+
+    if (PROTEGER_PAGINAS_GENERALES.includes(paginaActual) && !usuarioLogueado) {
+        // Usuario no logueado intentando acceder a una página general protegida
+        window.location.href = PAGINA_LOGIN;
+    } else if (paginaActual === PAGINA_LOGIN && usuarioLogueado) {
+        // Usuario logueado intentando acceder a la página de login
+        window.location.href = 'index.html'; // Redirigir a la página principal
+    } else if (paginaActual === PAGINA_ADMIN) {
+        // Lógica específica para la página de administración de usuarios
+        if (!usuarioLogueado) {
+            // Si no está logueado, redirigir a login
+            window.location.href = PAGINA_LOGIN;
+        } else if (nombreUsuarioActual !== 'admin') {
+            // Si está logueado pero NO es 'admin', redirigir a la página principal (o una de "acceso denegado")
+            alert('Acceso denegado. Esta página es solo para administradores.'); // Alerta opcional
+            window.location.href = 'index.html';
+        }
+        // Si está logueado Y es 'admin', se le permite quedarse en admin_usuarios.html
     }
 })();
 
@@ -222,21 +242,36 @@ function renderizarBarraNavegacion() {
     let navHTML = '<nav class="navbar-principal">';
 
     if (isLoggedIn()) {
-        const usuario = getUsuarioActual();
-        navHTML += `<span class="navbar-usuario">Hola, ${escapeHTML(usuario)}</span>`;
+        const username = getUsuarioActual(); // Ya estaba como 'usuario', renombrado para claridad con el prompt
+        let adminLink = '';
+
+        if (username === 'admin') {
+            adminLink = '<a href="admin_usuarios.html">Admin Usuarios</a>';
+        }
+
         navHTML += `
-            <a href="index.html">Itinerario</a>
-            <a href="gastos.html">Gastos</a>
-            <a href="disenar_itinerario.html">Diseñar Itinerario</a>
-            <a href="perfil.html">Perfil</a>
-            <button type="button" id="boton_logout_nav" class="navbar-boton-logout" aria-label="Cerrar sesión">Cerrar Sesión</button>
+            <div class="nav-links">
+                <a href="index.html">Itinerario</a>
+                <a href="gastos.html">Gastos</a>
+                <a href="disenar_itinerario.html">Diseñar Itinerario</a>
+                <a href="perfil.html">Perfil</a>
+                ${adminLink}
+            </div>
+            <div class="nav-user-actions">
+                <span class="navbar-usuario">Hola, ${escapeHTML(username)}</span>
+                <button type="button" id="boton_logout_nav" class="navbar-boton-logout" aria-label="Cerrar sesión">Cerrar Sesión</button>
+            </div>
         `;
     } else {
         navHTML += `
-            <a href="index.html">Itinerario</a>
-            <a href="login.html" aria-label="Iniciar sesión">Iniciar Sesión</a>
+            <div class="nav-links">
+                <a href="index.html" aria-label="Página de inicio del itinerario">Itinerario</a>
+                <a href="login.html" aria-label="Iniciar sesión">Iniciar Sesión</a>
+            </div>
+            <div class="nav-user-actions">
+                <!-- Puede estar vacío o tener un eslogan -->
+            </div>
         `;
-        // Podríamos añadir un enlace a "Registrarse" si existiera esa funcionalidad
     }
     navHTML += '</nav>';
     contenedorNav.innerHTML = navHTML;

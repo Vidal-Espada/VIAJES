@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseñar Itinerario - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+    <script src="itinerary-designer.js" defer></script>
+</head>
+<body>
+    <div id="barra-navegacion-contenedor"></div>
+
+    <main>
+        <section id="diseno_itinerario_seccion">
+            <h1>Diseña Tu Itinerario Personalizado</h1>
+
+            <article id="formulario_nuevo_dia">
+                <h2>Añadir Nuevo Día al Itinerario</h2>
+                <form id="formulario_diseno_itinerario">
+                    <div>
+                        <label for="fecha_dia">Fecha o Nombre del Día (ej: "Día 1", "2025-08-04"):</label>
+                        <input type="text" id="fecha_dia" name="fecha_dia" required>
+                    </div>
+                    <div>
+                        <label for="ciudad_dia">Ciudad Principal:</label>
+                        <input type="text" id="ciudad_dia" name="ciudad_dia" required>
+                    </div>
+                    <div>
+                        <label for="atracciones_dia">Atracciones (una por línea):</label>
+                        <textarea id="atracciones_dia" name="atracciones_dia" rows="4"></textarea>
+                    </div>
+                    <div>
+                        <label for="descripcion_dia">Descripción del Día / Notas Adicionales:</label>
+                        <textarea id="descripcion_dia" name="descripcion_dia" rows="3"></textarea>
+                    </div>
+                    <button type="submit">Agregar Día al Itinerario</button>
+                </form>
+            </article>
+
+            <article id="vista_previa_seccion">
+                <h2>Itinerario Actual</h2>
+                <div id="vista_previa_itinerario_diseñado">
+                    <!-- El itinerario diseñado se renderizará aquí -->
+                </div>
+            </article>
+
+            <!-- El botón de guardar completo es opcional ya que se guarda en cada acción.
+                 Podría usarse para una "confirmación final" o si se implementa un modo de edición sin guardado inmediato.
+            <button id="boton_guardar_itinerario_completo" style="margin-top: 20px;">Guardar Itinerario Completo</button>
+            -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const formDiseno = document.getElementById('formulario_diseno_itinerario');
+            if (formDiseno) {
+                formDiseno.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const fecha = document.getElementById('fecha_dia').value.trim();
+                    const ciudad = document.getElementById('ciudad_dia').value.trim();
+                    const atraccionesRaw = document.getElementById('atracciones_dia').value.trim();
+                    const descripcion = document.getElementById('descripcion_dia').value.trim();
+
+                    if (!fecha || !ciudad) {
+                        alert('La fecha/nombre del día y la ciudad son campos obligatorios.');
+                        return;
+                    }
+
+                    const atracciones = atraccionesRaw ? atraccionesRaw.split('\\n').map(a => a.trim()).filter(a => a) : [];
+
+                    agregarDia({
+                        fecha: fecha,
+                        ciudad: ciudad,
+                        atracciones: atracciones,
+                        descripcion: descripcion
+                    });
+
+                    formDiseno.reset(); // Limpiar el formulario
+                    document.getElementById('fecha_dia').focus(); // Foco en el primer campo
+                });
+            }
+
+            // Delegación de eventos para botones "Eliminar" y "Editar"
+            const vistaPreviaContenedor = document.getElementById('vista_previa_itinerario_diseñado');
+            if (vistaPreviaContenedor) {
+                vistaPreviaContenedor.addEventListener('click', function(event) {
+                    const target = event.target;
+                    const diaIndex = target.dataset.index;
+
+                    if (diaIndex === undefined) return; // No es un botón con data-index
+
+                    if (target.classList.contains('boton-eliminar-dia')) {
+                        if (confirm('¿Estás seguro de que quieres eliminar este día del itinerario?')) {
+                            eliminarDia(parseInt(diaIndex, 10));
+                        }
+                    } else if (target.classList.contains('boton-editar-dia')) {
+                        // Implementación básica para editar: podrías rellenar el formulario con los datos del día
+                        // o abrir un modal. Por ahora, usamos la función de placeholder.
+                        const diaAEditar = itinerarioActual[parseInt(diaIndex, 10)];
+                        if(diaAEditar){
+                            // Ejemplo: rellenar el formulario para edición rápida (o mostrar un prompt/modal)
+                            document.getElementById('fecha_dia').value = diaAEditar.fecha || '';
+                            document.getElementById('ciudad_dia').value = diaAEditar.ciudad || '';
+                            document.getElementById('atracciones_dia').value = Array.isArray(diaAEditar.atracciones) ? diaAEditar.atracciones.join('\\n') : (diaAEditar.atracciones || '');
+                            document.getElementById('descripcion_dia').value = diaAEditar.descripcion || '';
+
+                            // Podrías eliminar el día y pedir que lo vuelvan a añadir con los cambios,
+                            // o implementar una lógica de actualización más sofisticada en editarDia().
+                            alert('Los datos del día se han cargado en el formulario para edición. Modifica y vuelve a "Agregar Día" o implementa una función de actualización directa.');
+                            // Para una actualización directa, necesitarías un botón "Actualizar Día" y una lógica diferente.
+                            // eliminarDia(parseInt(diaIndex, 10)); // Opcional: eliminar para forzar re-adición
+                        }
+                        // editarDia(parseInt(diaIndex, 10), { descripcion: "Nueva descripción editada (ejemplo)" });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

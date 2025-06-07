@@ -3,127 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belgium Travel Assistant</title>
+    <title>Itinerario de Viaje a Bélgica</title>
     <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
 </head>
-<body>
+<body lang="es">
+    <div id="barra-navegacion-contenedor"></div>
+
     <header>
-        <h1>Belgium Travel Assistant</h1>
-        <nav>
-            <ul>
-                <li><a href="#itinerary">Itinerary</a></li>
-                <li><a href="#transportation">Transportation</a></li>
-                <li><a href="#tourist-info">Tourist Info</a></li>
-                <li><a href="#expenses">Expenses</a></li>
-            </ul>
-        </nav>
+        <h1>Asistente de Viajes a Bélgica</h1>
+        <!-- La navegación antigua se elimina/reemplaza por la dinámica -->
     </header>
 
     <main>
-        <section id="itinerary">
-            <h2>Daily Itinerary</h2>
-            <div id="itinerary-content" aria-live="polite">
-                <!-- Itinerary will be loaded here by JavaScript -->
+        <section id="contenido_itinerario_seccion">
+            <h2>Itinerario Diario</h2>
+            <div id="contenido_itinerario" aria-live="polite">
+                <!-- El itinerario se cargará aquí mediante JavaScript -->
             </div>
-            <!-- <p>Placeholder for itinerary details.</p> -->
         </section>
 
-        <section id="transportation">
-            <h2>Train Travel in Belgium</h2>
-            <p>Train travel is the most convenient and efficient way to visit major cities and towns across Belgium. The rail network is extensive and services are frequent.</p>
+        <section id="transporte_seccion">
+            <h2>Viajar en Tren por Bélgica</h2>
+            <p>Viajar en tren es la forma más cómoda y eficiente de visitar las principales ciudades y pueblos de Bélgica. La red ferroviaria es extensa y los servicios son frecuentes.</p>
 
             <article>
-                <h3>General Tips for Train Travel</h3>
+                <h3>Consejos Generales para Viajar en Tren</h3>
                 <ul>
-                    <li>Book tickets in advance, especially for peak travel times, to potentially get better prices.</li>
-                    <li>Always validate your ticket (if required by the type of ticket purchased) before boarding the train or immediately upon boarding if validation machines are on board.</li>
-                    <li>Check for rail passes (e.g., Rail Pass, Go Pass 10) if you plan on making multiple train journeys, as they can offer significant savings.</li>
-                    <li>Keep an eye on departure boards at the station for platform information, as it can sometimes change.</li>
-                    <li>Most trains offer first and second class; second class is perfectly comfortable for most journeys.</li>
+                    <li>Reserva los billetes con antelación, especialmente en temporada alta, para conseguir mejores precios.</li>
+                    <li>Valida siempre tu billete (si el tipo de billete lo requiere) antes de subir al tren o inmediatamente al subir si hay máquinas validadoras a bordo.</li>
+                    <li>Considera los pases de tren (por ejemplo, Rail Pass, Go Pass 10) si planeas hacer varios viajes, ya que pueden ofrecer ahorros significativos.</li>
+                    <li>Vigila los paneles de salidas en la estación para confirmar el andén, ya que a veces puede cambiar.</li>
+                    <li>La mayoría de los trenes ofrecen primera y segunda clase; la segunda clase es perfectamente cómoda para la mayoría de los trayectos.</li>
                 </ul>
             </article>
 
             <article>
-                <h3>Schedules & Prices (Example)</h3>
-                <p><em>The information below is for illustrative purposes only. Please consult the official Belgian Railways (NMBS/SNCB) website for the most current schedules and fares.</em></p>
-                <div class="example-schedule">
-                    <p><strong>Brussels to Ghent:</strong> Approximately 30-40 EUR (one way, 2nd class). Trains run frequently, typically every 15-30 minutes. Journey time around 30-35 minutes.</p>
-                    <p><strong>Brussels to Bruges:</strong> Approximately 40-50 EUR (one way, 2nd class). Trains run frequently, typically every 20-30 minutes. Journey time around 55-60 minutes.</p>
-                    <p><strong>Brussels to Antwerp:</strong> Approximately 20-30 EUR (one way, 2nd class). Very frequent departures. Journey time around 45-50 minutes.</p>
+                <h3>Horarios y Precios (Ejemplo)</h3>
+                <p><em>La información siguiente es solo orientativa. Por favor, consulta la web oficial de los Ferrocarriles Belgas (NMBS/SNCB) para horarios y tarifas actualizadas.</em></p>
+                <div class="example-schedule"> <!-- Mantengo esta clase en inglés por si está muy usada en CSS y JS, se puede cambiar luego -->
+                    <p><strong>Bruselas a Gante:</strong> Aproximadamente 30-40 EUR (ida, 2ª clase). Salidas frecuentes, cada 15-30 minutos. Duración del viaje: unos 30-35 minutos.</p>
+                    <p><strong>Bruselas a Brujas:</strong> Aproximadamente 40-50 EUR (ida, 2ª clase). Salidas frecuentes, cada 20-30 minutos. Duración del viaje: unos 55-60 minutos.</p>
+                    <p><strong>Bruselas a Amberes:</strong> Aproximadamente 20-30 EUR (ida, 2ª clase). Salidas muy frecuentes. Duración del viaje: unos 45-50 minutos.</p>
                 </div>
             </article>
         </section>
 
-        <section id="tourist-info">
-            <h2>City Tourist Highlights</h2>
+        <section id="info_turistica_seccion">
+            <h2>Principales Atracciones Turísticas por Ciudad</h2>
 
             <article>
-                <h3>Brussels</h3>
-                <ul class="attractions-list">
-                    <li><strong>Grand-Place:</strong> The stunning central square of Brussels, a UNESCO World Heritage site, surrounded by ornate guildhalls.</li>
-                    <li><strong>Atomium:</strong> A landmark building originally constructed for the 1958 Brussels World's Fair, offering panoramic views.</li>
-                    <li><strong>Manneken Pis:</strong> A famous bronze fountain sculpture of a peeing boy, which is often dressed in costumes.</li>
-                    <li><strong>Royal Palace of Brussels:</strong> The official palace of the King and Queen of the Belgians, open to visitors during the summer.</li>
+                <h3>Bruselas</h3>
+                <ul class="attractions-list"> <!-- Mantengo esta clase, se puede cambiar luego -->
+                    <li><strong>Grand-Place:</strong> La impresionante plaza central de Bruselas, Patrimonio de la Humanidad por la UNESCO, rodeada de ornamentados edificios gremiales.</li>
+                    <li><strong>Atomium:</strong> Emblemático edificio construido para la Exposición Universal de Bruselas de 1958, que ofrece vistas panorámicas.</li>
+                    <li><strong>Manneken Pis:</strong> Famosa escultura de bronce de un niño orinando, que a menudo se viste con diversos atuendos.</li>
+                    <li><strong>Palacio Real de Bruselas:</strong> El palacio oficial de los Reyes de los Belgas, abierto al público durante el verano.</li>
                 </ul>
             </article>
 
-            <p>More cities and detailed information about attractions, opening hours, and tips will be added soon.</p>
-        </section>
-
-        <section id="expenses">
-            <h2>Expense Tracker</h2>
-
-            <article>
-                <h3>Add New Expense</h3>
-                <form id="expense-form">
-                    <div>
-                        <label for="expense-description">Description:</label>
-                        <input type="text" id="expense-description" name="expense-description" required>
-                    </div>
-                    <div>
-                        <label for="expense-amount">Amount (&euro;):</label>
-                        <input type="number" id="expense-amount" name="expense-amount" required step="0.01" min="0.01">
-                    </div>
-                    <div>
-                        <label for="expense-category">Category:</label>
-                        <select id="expense-category" name="expense-category">
-                            <option value="Travel">Travel</option>
-                            <option value="Meals">Meals</option>
-                            <option value="Tickets">Tickets & Entry Fees</option>
-                            <option value="Accommodation">Accommodation</option>
-                            <option value="Souvenirs">Souvenirs</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="expense-paid-by">Who Paid:</label>
-                        <input type="text" id="expense-paid-by" name="expense-paid-by" placeholder="Enter name (e.g., John D.)" required>
-                    </div>
-                    <button type="submit">Add Expense</button>
-                </form>
-            </article>
-
-            <article>
-                <h3>All Expenses</h3>
-                <div id="expense-list" aria-live="polite">
-                    <p>No expenses added yet.</p>
-                    <!-- Expenses will be listed here by JavaScript -->
-                </div>
-            </article>
-
-            <article>
-                <h3>Expense Summary & Settlement</h3>
-                <div id="expense-summary" aria-live="polite">
-                    <p>Summary of expenses and who owes whom will be shown here.</p>
-                    <!-- Summary will be calculated and displayed here by JavaScript -->
-                </div>
-            </article>
+            <p>Próximamente se añadirán más ciudades e información detallada sobre atracciones, horarios y consejos.</p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Belgium Travel Assistant</p>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
     </footer>
     <script src="script.js" defer></script>
+
+    <!-- Modal para Descripción de Sitios Turísticos -->
+    <div id="modal_descripcion_sitio" class="modal-descripcion" style="display:none;">
+        <div class="modal-descripcion-contenido">
+            <h3 id="modal_titulo_sitio"></h3>
+            <p id="modal_texto_descripcion"></p>
+            <button id="boton_escuchar_descripcion">Escuchar Descripción</button>
+            <button id="boton_cerrar_modal_descripcion">Cerrar</button>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div id="barra-navegacion-contenedor"></div>
+
+    <main>
+        <section id="perfil_seccion">
+            <h1>Perfil de Usuario</h1>
+            <p>Bienvenido, <strong id="nombre_usuario_actual"></strong>.</p>
+
+            <article id="cambiar_username_articulo">
+                <h2>Cambiar Nombre de Usuario</h2>
+                <form id="cambiar_username_formulario">
+                    <div>
+                        <label for="nuevo_username">Nuevo Nombre de Usuario:</label>
+                        <input type="text" id="nuevo_username" name="nuevo_username" required>
+                    </div>
+                    <div>
+                        <label for="password_actual_para_username">Contraseña Actual:</label>
+                        <input type="password" id="password_actual_para_username" name="password_actual_para_username" required>
+                    </div>
+                    <button type="submit">Cambiar Nombre de Usuario</button>
+                </form>
+                <p id="mensaje_cambiar_username" class="mensaje-info" style="display:none;"></p>
+            </article>
+
+            <article id="cambiar_password_articulo">
+                <h2>Cambiar Contraseña</h2>
+                <form id="cambiar_password_formulario">
+                    <div>
+                        <label for="password_antigua">Contraseña Antigua:</label>
+                        <input type="password" id="password_antigua" name="password_antigua" required>
+                    </div>
+                    <div>
+                        <label for="nueva_password">Nueva Contraseña:</label>
+                        <input type="password" id="nueva_password" name="nueva_password" required>
+                    </div>
+                     <div>
+                        <label for="confirmar_nueva_password">Confirmar Nueva Contraseña:</label>
+                        <input type="password" id="confirmar_nueva_password" name="confirmar_nueva_password" required>
+                    </div>
+                    <button type="submit">Cambiar Contraseña</button>
+                </form>
+                <p id="mensaje_cambiar_password" class="mensaje-info" style="display:none;"></p>
+            </article>
+
+            <button id="boton_logout" type="button">Cerrar Sesión</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // La redirección si no está logueado la maneja auth.js
+            // if (!isLoggedIn()) {
+            //    window.location.href = 'login.html';
+            //    return;
+            // }
+
+            const nombreUsuarioActualEl = document.getElementById('nombre_usuario_actual');
+            const usuarioActual = getUsuarioActual();
+            if (usuarioActual && nombreUsuarioActualEl) {
+                nombreUsuarioActualEl.textContent = usuarioActual;
+            }
+
+            const cambiarUsernameForm = document.getElementById('cambiar_username_formulario');
+            const mensajeCambiarUsernameEl = document.getElementById('mensaje_cambiar_username');
+
+            if (cambiarUsernameForm) {
+                cambiarUsernameForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const nuevoUsername = document.getElementById('nuevo_username').value;
+                    const passwordActual = document.getElementById('password_actual_para_username').value;
+
+                    const resultado = cambiarUsername(usuarioActual, nuevoUsername, passwordActual);
+
+                    if (mensajeCambiarUsernameEl) {
+                        mensajeCambiarUsernameEl.textContent = resultado.message;
+                        mensajeCambiarUsernameEl.className = resultado.success ? 'mensaje-exito' : 'mensaje-error';
+                        mensajeCambiarUsernameEl.style.display = 'block';
+                    }
+
+                    if (resultado.success) {
+                        if (nombreUsuarioActualEl) nombreUsuarioActualEl.textContent = nuevoUsername; // Actualizar en la página
+                        cambiarUsernameForm.reset();
+                    }
+                });
+            }
+
+            const cambiarPasswordForm = document.getElementById('cambiar_password_formulario');
+            const mensajeCambiarPasswordEl = document.getElementById('mensaje_cambiar_password');
+
+            if (cambiarPasswordForm) {
+                cambiarPasswordForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const passwordAntigua = document.getElementById('password_antigua').value;
+                    const nuevaPassword = document.getElementById('nueva_password').value;
+                    const confirmarNuevaPassword = document.getElementById('confirmar_nueva_password').value;
+
+                    if (nuevaPassword !== confirmarNuevaPassword) {
+                        if(mensajeCambiarPasswordEl) {
+                            mensajeCambiarPasswordEl.textContent = 'Las nuevas contraseñas no coinciden.';
+                            mensajeCambiarPasswordEl.className = 'mensaje-error';
+                            mensajeCambiarPasswordEl.style.display = 'block';
+                        }
+                        return;
+                    }
+
+                    const resultado = cambiarPassword(usuarioActual, passwordAntigua, nuevaPassword);
+
+                    if (mensajeCambiarPasswordEl) {
+                        mensajeCambiarPasswordEl.textContent = resultado.message;
+                        mensajeCambiarPasswordEl.className = resultado.success ? 'mensaje-exito' : 'mensaje-error';
+                        mensajeCambiarPasswordEl.style.display = 'block';
+                    }
+
+                    if (resultado.success) {
+                        cambiarPasswordForm.reset();
+                    }
+                });
+            }
+
+            const botonLogout = document.getElementById('boton_logout');
+            if (botonLogout) {
+                botonLogout.addEventListener('click', () => {
+                    logout();
+                    window.location.href = 'login.html'; // Redirigir explícitamente después del logout
+                });
+            }
+        });
+    </script>
+</body>
+</html>

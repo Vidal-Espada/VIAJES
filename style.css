@@ -6,8 +6,59 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    padding-top: 60px; /* Ajustar según la altura de la barra de navegación fija */
 }
 
+/* =========================================
+   Barra de Navegación Principal (Dinámica)
+   ========================================= */
+#barra-navegacion-contenedor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar-principal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-principal a,
+.navbar-principal .navbar-boton-logout {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    border: none; /* Para el botón logout */
+    background: none; /* Para el botón logout */
+    cursor: pointer; /* Para el botón logout */
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.navbar-principal a:hover,
+.navbar-principal .navbar-boton-logout:hover {
+    background-color: #555;
+}
+
+.navbar-usuario {
+    color: #e0e0e0;
+    margin-right: 15px;
+    font-size: 0.9em;
+}
+
+
+/* Estilos para la cabecera antigua (si aún se usa o como referencia) */
 header {
     background-color: #3498db; /* A shade of blue */
     color: white;
@@ -114,13 +165,13 @@ footer {
    Transportation Section Styles
    ========================================= */
 
-#transportation ul { /* General tips list */
+#transporte_seccion ul { /* General tips list */
     list-style-type: disc;
     margin-left: 20px; /* Standard indent */
     padding-left: 15px; /* Padding for bullets */
 }
 
-#transportation ul li {
+#transporte_seccion ul li {
     margin-bottom: 8px;
     line-height: 1.6;
 }
@@ -146,13 +197,13 @@ footer {
    Tourist Information Section Styles
    ========================================= */
 
-#tourist-info .attractions-list { /* UL element */
+#info_turistica_seccion .attractions-list { /* UL element */
     list-style-type: none; /* Remove default bullets */
     padding-left: 0; /* Remove default padding */
 }
 
 /* Individual attraction item (LI element) */
-#tourist-info .attractions-list li {
+#info_turistica_seccion .attractions-list li {
     background-color: #fdfdfd; /* Consistent with itinerary items */
     border: 1px solid #e0e0e0;
     padding: 15px; /* Increased padding */
@@ -162,7 +213,7 @@ footer {
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
 }
 
-#tourist-info .attractions-list li strong { /* Attraction name */
+#info_turistica_seccion .attractions-list li strong { /* Attraction name */
     color: #3498db; /* Theme blue for attraction names */
     display: block;
     margin-bottom: 5px;
@@ -170,121 +221,119 @@ footer {
 }
 
 /* =========================================
-   Expense Tracker Section Styles
+   Sección de Gastos (gastos.html)
    ========================================= */
 
-/* Form styling */
-#expense-form div { /* Wrapper for label + input */
-    margin-bottom: 12px; /* Increased space between form fields */
+/* Estilo del formulario */
+#gasto_formulario div { /* Contenedor para etiqueta + input */
+    margin-bottom: 12px; /* Espacio incrementado entre campos */
 }
 
-#expense-form label {
+#gasto_formulario label {
     display: block;
-    margin-bottom: 6px; /* Increased space below label */
+    margin-bottom: 6px; /* Espacio incrementado bajo la etiqueta */
     font-weight: bold;
-    color: #444; /* Slightly darker for better contrast */
+    color: #444; /* Ligeramente más oscuro para mejor contraste */
 }
 
-#expense-form input[type="text"],
-#expense-form input[type="number"],
-#expense-form select {
+#gasto_formulario input[type="text"],
+#gasto_formulario input[type="number"],
+#gasto_formulario select {
     width: 100%;
     padding: 10px;
-    /* margin-bottom is handled by the parent div's margin-bottom */
     border: 1px solid #ccc;
-    border-radius: 5px; /* Consistent radius */
+    border-radius: 5px; /* Radio consistente */
     box-sizing: border-box;
     font-size: 1em;
 }
 
-#expense-form input[type="number"] {
-    /* Specific for number input if needed, e.g. appearance for spinner */
+#gasto_formulario input[type="number"] {
+    /* Específico para input numérico si es necesario */
 }
 
-#expense-form select {
+#gasto_formulario select {
     cursor: pointer;
 }
 
-#expense-form button[type="submit"] {
-    background-color: #2ecc71; /* Green */
+#gasto_formulario button[type="submit"] {
+    background-color: #2ecc71; /* Verde */
     color: white;
     padding: 12px 20px;
     border: none;
-    border-radius: 5px; /* Consistent radius */
+    border-radius: 5px; /* Radio consistente */
     cursor: pointer;
-    font-size: 1.05em; /* Slightly larger */
+    font-size: 1.05em; /* Ligeramente más grande */
     transition: background-color 0.2s ease-in-out;
-    /* width: 100%; Full width handled by media query for smaller screens */
-    display: block; /* Allows margin auto for centering if not full width */
-    margin: 10px auto 0; /* Centering for larger screens, top margin */
-    min-width: 200px; /* Minimum width for larger screens */
+    display: block;
+    margin: 10px auto 0;
+    min-width: 200px;
 }
 
-#expense-form button[type="submit"]:hover {
-    background-color: #27ae60; /* Darker green */
+#gasto_formulario button[type="submit"]:hover {
+    background-color: #27ae60; /* Verde más oscuro */
 }
 
-/* Containers for expense list and summary (article > div) */
-#expense-list, #expense-summary {
+/* Contenedores para lista y resumen de gastos */
+#lista_gastos, #resumen_gastos {
     padding: 15px;
-    margin-top: 25px; /* Increased margin from form/previous section */
+    margin-top: 25px; /* Margen incrementado desde el formulario/sección previa */
     border: 1px solid #ddd;
-    border-radius: 5px; /* Consistent radius */
-    background-color: #f9f9f9; /* Light grey background for these areas */
+    border-radius: 5px; /* Radio consistente */
+    background-color: #f9f9f9; /* Fondo gris claro para estas áreas */
 }
 
-/* Placeholder text style (direct child p of the list/summary div) */
-#expense-list > p:first-child,
-#expense-summary > p:first-child {
+/* Estilo del texto placeholder */
+#lista_gastos > p:first-child,
+#resumen_gastos > p:first-child {
     color: #777;
     font-style: italic;
-    text-align: center; /* Center placeholder text */
-    padding: 20px 0; /* Add some padding to placeholder */
+    text-align: center; /* Centrar texto placeholder */
+    padding: 20px 0; /* Añadir algo de padding */
 }
 
-/* Expense summary distinct styling */
-#expense-summary {
-    background-color: #e9f5ff; /* Light blue, distinct from list */
-    border-color: #aed6f1; /* Softer blue for border */
+/* Estilo distintivo para resumen de gastos */
+#resumen_gastos {
+    background-color: #e9f5ff; /* Azul claro, distinto de la lista */
+    border-color: #aed6f1; /* Azul más suave para el borde */
 }
 
-/* Dynamically added expense items list (UL) */
-.expenses-ul {
+/* Lista de gastos añadidos dinámicamente (UL) */
+.gastos_ul { /* Anteriormente .expenses-ul */
     list-style-type: none;
     padding-left: 0;
 }
 
-/* Individual expense item (LI) */
-.expense-item { /* This class is applied to article elements (LI) by JS */
-    background-color: #fff; /* White background for each item */
+/* Ítem individual de gasto (LI) */
+.gasto_item { /* Anteriormente .expense-item */
+    background-color: #fff; /* Fondo blanco para cada ítem */
     border: 1px solid #e0e0e0;
-    padding: 12px 15px; /* Adjusted padding */
-    margin-bottom: 12px; /* Adjusted margin */
-    border-radius: 5px; /* Consistent radius */
+    padding: 12px 15px; /* Padding ajustado */
+    margin-bottom: 12px; /* Margen ajustado */
+    border-radius: 5px; /* Radio consistente */
     display: flex;
-    flex-direction: column; /* Stack header and body */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+    flex-direction: column; /* Apilar cabecera y cuerpo */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sombra sutil */
 }
 
-.expense-item:last-child {
-    margin-bottom: 0; /* No margin for the last item in the list */
+.gasto_item:last-child {
+    margin-bottom: 0; /* Sin margen para el último ítem */
 }
 
-.expense-item-header {
+.gasto_item-cabecera { /* Anteriormente .expense-item-header */
     display: flex;
-    justify-content: space-between; /* Puts description/category left, future buttons right */
-    align-items: center; /* Vertically align items if they wrap */
-    font-size: 1.05em; /* Slightly adjusted */
-    margin-bottom: 8px; /* Space between header and body */
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.05em;
+    margin-bottom: 8px;
 }
 
-.expense-item-header .expense-description-category {
-    flex-grow: 1; /* Allow text to take available space */
+.gasto_item-cabecera .descripcion_categoria_gasto { /* Anteriormente .expense-description-category */
+    flex-grow: 1;
 }
-.expense-item-header .expense-description-category strong { /* Description */
+.gasto_item-cabecera .descripcion_categoria_gasto strong { /* Descripción */
     color: #333;
 }
-.expense-item-header .expense-description-category .category-tag { /* Category */
+.gasto_item-cabecera .descripcion_categoria_gasto .etiqueta_categoria { /* Anteriormente .category-tag */
     font-size: 0.85em;
     color: #777;
     margin-left: 8px;
@@ -293,8 +342,8 @@ footer {
     border-radius: 3px;
 }
 
-/* Placeholder for delete button, not yet functional */
-.expense-item-header .delete-btn-placeholder {
+/* Placeholder para botón de eliminar */
+.gasto_item-cabecera .placeholder_boton_eliminar { /* Anteriormente .delete-btn-placeholder */
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -302,49 +351,445 @@ footer {
     border-radius: 4px;
     font-size: 0.8em;
     cursor: pointer;
-    margin-left: 10px; /* Space from the text content */
+    margin-left: 10px;
 }
-.expense-item-header .delete-btn-placeholder:hover {
+.gasto_item-cabecera .placeholder_boton_eliminar:hover {
     background-color: #c0392b;
 }
 
+.gasto_item_contenido { /* Nuevo div para agrupar contenido textual */
+    flex-grow: 1; /* Permite que este div ocupe el espacio, empujando los botones a la derecha si .gasto_item es flex row */
+}
 
-.expense-item-body {
+.gasto_item_acciones {
+    display: flex;
+    flex-direction: column; /* Apila botones verticalmente por defecto */
+    align-items: flex-end; /* Alinea botones a la derecha si están en columna */
+    margin-top: 10px;
+}
+
+.gasto_item_acciones button {
+    padding: 5px 10px;
+    font-size: 0.85em;
+    margin-bottom: 5px; /* Espacio entre botones si están en columna */
+    min-width: 80px; /* Ancho mínimo para botones */
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+.gasto_item_acciones button:last-child {
+    margin-bottom: 0;
+}
+
+.boton_editar_gasto {
+    background-color: #f0ad4e; /* Naranja */
+    color: white;
+    border-color: #eea236;
+}
+.boton_editar_gasto:hover {
+    background-color: #ec971f;
+}
+
+.boton_eliminar_gasto {
+    background-color: #d9534f; /* Rojo */
+    color: white;
+    border-color: #d43f3a;
+}
+.boton_eliminar_gasto:hover {
+    background-color: #c9302c;
+}
+
+
+.gasto_item-cuerpo { /* Anteriormente .expense-item-body */
     display: flex;
     justify-content: space-between;
     font-size: 0.95em;
     color: #555;
 }
-.expense-item-body .amount { /* Amount span */
+.gasto_item-cuerpo .cantidad { /* Span de cantidad */
     font-weight: bold;
-    color: #2c3e50; /* Darker, neutral color */
+    color: #2c3e50; /* Color más oscuro, neutral */
 }
-.expense-item-body .paid-by { /* Paid by span */
-    /* Additional styling if needed */
-}
-
-/* Styling for summary section text elements */
-#expense-summary p,
-#expense-summary ul {
-    margin-bottom: 10px; /* Consistent spacing for text blocks */
-}
-#expense-summary strong { /* General strong tags in summary, e.g., "Overall Total Expenses:" */
-    color: #2980b9; /* Darker theme blue */
+.gasto_item-cuerpo .pagado_por { /* Span de pagado_por */
+    /* Estilo adicional si es necesario */
 }
 
-#expense-summary ul { /* Lists within summary (payers, settlement) */
-    list-style-type: disc; /* Use disc for payer list and settlement */
+/* Estilo para elementos de texto en sección de resumen */
+#resumen_gastos p,
+#resumen_gastos ul {
+    margin-bottom: 10px; /* Espaciado consistente */
+}
+#resumen_gastos strong { /* Etiquetas strong generales en resumen */
+    color: #2980b9; /* Azul temático más oscuro */
+}
+
+#resumen_gastos ul { /* Listas dentro de resumen (pagadores, liquidación) */
+    list-style-type: disc;
     margin-left: 20px;
-    padding-left: 15px; /* Padding for bullets */
+    padding-left: 15px; /* Padding para viñetas */
 }
 
-#expense-summary ul li {
-    margin-bottom: 6px; /* Spacing for list items */
+#resumen_gastos ul li {
+    margin-bottom: 6px; /* Espaciado para ítems de lista */
 }
 
 .owed-amount {
     color: #27ae60; /* Green for owed */
     font-weight: bold;
+}
+
+/* =========================================
+   Estilos para Diseñador de Itinerarios (disenar_itinerario.html)
+   ========================================= */
+
+/* Estilos para Modal de Descripción de Sitios y Botones de Atracción - Añadido antes de diseñador */
+.boton_atraccion {
+    background: none;
+    border: none;
+    color: #007bff; /* Color de enlace azul */
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 2px 5px;
+    font-size: inherit;
+    font-family: inherit;
+    text-align: left;
+    display: inline;
+}
+
+.boton_atraccion:hover {
+    color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+
+.modal-descripcion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex; /* Cambiado de none a flex para controlar con opacity/visibility */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.modal-descripcion[style*="display: flex"] { /* Estilo cuando está visible */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.modal-descripcion-contenido {
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    text-align: left;
+    max-width: 550px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: scale(0.95); /* Efecto de escala para la aparición */
+    transition: transform 0.3s ease;
+}
+
+.modal-descripcion[style*="display: flex"] .modal-descripcion-contenido {
+    transform: scale(1);
+}
+
+.modal-descripcion-contenido h3 {
+    margin-top: 0;
+    color: #3498db;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.modal-descripcion-contenido p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.modal-descripcion-contenido button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease;
+}
+.modal-descripcion-contenido button:last-child {
+    margin-right: 0;
+}
+
+#boton_escuchar_descripcion {
+    background-color: #2ecc71;
+    color: white;
+}
+#boton_escuchar_descripcion:hover {
+    background-color: #27ae60;
+}
+
+#boton_cerrar_modal_descripcion {
+    background-color: #e74c3c;
+    color: white;
+}
+#boton_cerrar_modal_descripcion:hover {
+    background-color: #c0392b;
+}
+/* Fin de estilos para Modal */
+
+
+#diseno_itinerario_seccion {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#formulario_nuevo_dia,
+#vista_previa_seccion {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+#formulario_diseno_itinerario div {
+    margin-bottom: 15px;
+}
+
+#formulario_diseno_itinerario label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+#formulario_diseno_itinerario input[type="text"],
+#formulario_diseno_itinerario textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+#formulario_diseno_itinerario textarea {
+    resize: vertical; /* Permitir redimensionar verticalmente */
+}
+
+#formulario_diseno_itinerario button[type="submit"] {
+    background-color: #5cb85c; /* Verde para agregar */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+#formulario_diseno_itinerario button[type="submit"]:hover {
+    background-color: #4cae4c; /* Verde más oscuro */
+}
+
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #fdfdfd;
+}
+
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item h3 {
+    color: #3498db;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item h4 {
+    font-size: 1.1em;
+    color: #555;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item p {
+    margin: 5px 0 10px 0;
+    line-height: 1.6;
+}
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 15px;
+}
+#vista_previa_itinerario_diseñado .dia-itinerario-diseñado-item ul li {
+    margin-bottom: 4px;
+}
+
+
+#vista_previa_itinerario_diseñado .botones-dia {
+    margin-top: 10px;
+    text-align: right;
+}
+
+#vista_previa_itinerario_diseñado .botones-dia button {
+    padding: 6px 12px;
+    margin-left: 10px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+#vista_previa_itinerario_diseñado .boton-editar-dia {
+    background-color: #f0ad4e; /* Naranja para editar */
+    color: white;
+    border-color: #eea236;
+}
+#vista_previa_itinerario_diseñado .boton-editar-dia:hover {
+    background-color: #ec971f;
+}
+
+#vista_previa_itinerario_diseñado .boton-eliminar-dia {
+    background-color: #d9534f; /* Rojo para eliminar */
+    color: white;
+    border-color: #d43f3a;
+}
+#vista_previa_itinerario_diseñado .boton-eliminar-dia:hover {
+    background-color: #c9302c;
+}
+
+
+/* =========================================
+   Estilos para Login y Perfil
+   ========================================= */
+
+#login_seccion,
+#perfil_seccion {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#login_seccion h1,
+#perfil_seccion h1,
+#perfil_seccion h2 {
+    text-align: center;
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+#perfil_seccion article {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+#perfil_seccion article:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+
+#login_formulario div,
+#cambiar_username_formulario div,
+#cambiar_password_formulario div {
+    margin-bottom: 15px;
+}
+
+#login_formulario label,
+#cambiar_username_formulario label,
+#cambiar_password_formulario label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+#login_formulario input[type="text"],
+#login_formulario input[type="password"],
+#cambiar_username_formulario input[type="text"],
+#cambiar_username_formulario input[type="password"],
+#cambiar_password_formulario input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#login_formulario button[type="submit"],
+#cambiar_username_formulario button[type="submit"],
+#cambiar_password_formulario button[type="submit"],
+#boton_logout {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+#login_formulario button[type="submit"]:hover,
+#cambiar_username_formulario button[type="submit"]:hover,
+#cambiar_password_formulario button[type="submit"]:hover,
+#boton_logout:hover {
+    background-color: #2980b9;
+}
+
+#boton_logout {
+    background-color: #e74c3c; /* Rojo para logout */
+    margin-top: 20px;
+}
+#boton_logout:hover {
+    background-color: #c0392b;
+}
+
+.mensaje-error {
+    color: #c0392b; /* Rojo */
+    background-color: #fdd;
+    border: 1px solid #c0392b;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.mensaje-exito {
+    color: #27ae60; /* Verde */
+    background-color: #e6ffed;
+    border: 1px solid #27ae60;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+/* Clase genérica para mensajes informativos, por si se necesita */
+.mensaje-info {
+    color: #3498db; /* Azul */
+    background-color: #e9f5ff;
+    border: 1px solid #3498db;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    text-align: center;
 }
 
 /* =========================================
@@ -368,23 +813,43 @@ footer {
    ========================================= */
 
 @media (max-width: 768px) {
+    /* Ajustes para la cabecera antigua si aún se usa temporalmente */
     header h1 {
         font-size: 1.8em;
     }
-
-    nav {
+    /* nav referenciando a la antigua nav, no a .navbar-principal */
+    header nav {
         padding: 10px;
     }
-
-    nav ul li {
-        display: block; /* Stack navigation links vertically */
+    header nav ul li {
+        display: block;
         margin-right: 0;
         margin-bottom: 5px;
     }
-
-    nav ul li a {
-        display: block; /* Make links take full width for easier tapping */
+    header nav ul li a {
+        display: block;
         padding: 8px;
+    }
+
+    /* Estilos para la barra de navegación principal en móvil */
+    body {
+        padding-top: 290px; /* Ajustado para navbar apilada más alta */
+    }
+    .navbar-principal {
+        flex-direction: column; /* Apilar elementos de la barra */
+        padding: 10px; /* Reducir padding en móvil */
+    }
+    .navbar-principal a,
+    .navbar-principal .navbar-boton-logout {
+        width: 100%; /* Enlaces/botones a ancho completo */
+        text-align: center;
+        margin: 5px 0; /* Espacio vertical entre enlaces */
+        padding: 10px; /* Padding mayor para facilitar el toque */
+    }
+    .navbar-usuario {
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
     }
 
     section {
@@ -392,61 +857,155 @@ footer {
         margin-bottom: 15px;
     }
 
-    #expense-form input[type="text"],
-    #expense-form input[type="number"],
-    #expense-form select,
-    #expense-form button[type="submit"] {
-        padding: 12px; /* Slightly larger padding for touch */
-        font-size: 1em; /* Ensure font size is not too small on mobile */
+    #gasto_formulario input[type="text"],
+    #gasto_formulario input[type="number"],
+    #gasto_formulario select,
+    #gasto_formulario button[type="submit"] {
+        padding: 12px; /* Padding mayor para táctil */
+        font-size: 1em; /* Asegurar que la fuente no sea muy pequeña en móviles */
     }
 
-    #expense-form button[type="submit"] {
-        width: 100%; /* Make button full width */
-        margin-top: 10px; /* Add some space above full-width button */
+    #gasto_formulario button[type="submit"] {
+        width: 100%; /* Botón a ancho completo */
+        margin-top: 10px; /* Espacio sobre el botón a ancho completo */
     }
 
-    /* Adjust flex direction for stacked items on mobile */
-    .itinerary-day,
-    .expense-item {
+    /* Ajustar flex direction para elementos apilados en móviles */
+    .itinerary-day, /* .dia_itinerario si se traduce en JS */
+    .gasto_item {
+        /* flex-direction: column; Ya es columna por defecto */
+        /* Considerar si .gasto_item debe ser flex-direction: row en pantallas grandes
+           y luego column en móviles para que las acciones estén al lado y no debajo. */
+    }
+    .gasto_item_acciones {
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+    }
+    .gasto_item_acciones button {
+        margin-bottom: 0;
+        margin-left: 8px;
+    }
+    .gasto_item_acciones button:first-child {
+        margin-left: 0;
+    }
+
+    /* Formularios responsivos generales */
+    .formulario-responsivo input[type="text"],
+    .formulario-responsivo input[type="number"],
+    .formulario-responsivo input[type="password"],
+    .formulario-responsivo input[type="email"],
+    .formulario-responsivo select,
+    .formulario-responsivo textarea {
+        width: 100%;
+    }
+
+    .formulario-responsivo button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+    }
+    /* Aplicar .formulario-responsivo a los forms en HTML o adaptar selectores */
+    #gasto_formulario, #login_formulario,
+    #cambiar_username_formulario, #cambiar_password_formulario,
+    #formulario_diseno_itinerario {
+        /* Hereda los estilos si los inputs/botones ya son 100% width por defecto,
+           o se pueden añadir clases .formulario-responsivo a estos forms en HTML */
+    }
+     #formulario_diseno_itinerario button[type="submit"] { /* Ya era específico */
+        width: 100%;
+    }
+
+
+    .gasto_item-cabecera,
+    .gasto_item-cuerpo {
         flex-direction: column;
-    }
-    .expense-item-header,
-    .expense-item-body {
-        flex-direction: column; /* Stack content within expense items */
         align-items: flex-start;
     }
 
-    .expense-item-header strong,
-    .expense-item-body span,
+    .gasto_item-cabecera strong,
+    .gasto_item-cuerpo span,
     .itinerary-day h3,
     .itinerary-day p {
-        margin-bottom: 5px; /* Space out stacked items */
+        margin-bottom: 5px;
     }
-    .expense-item-header .expense-description-category .category-tag {
+    .gasto_item-cabecera .descripcion_categoria_gasto .etiqueta_categoria {
         display: inline-block;
         margin-top: 4px;
     }
+
+    /* Diseñador de Itinerario - Vista Previa */
+    .dia-itinerario-diseñado-item .botones-dia {
+        flex-direction: row; /* Botones en fila */
+        justify-content: flex-end;
+        width: 100%;
+    }
+    .dia-itinerario-diseñado-item .botones-dia button {
+        margin-left: 8px;
+        margin-bottom: 0;
+    }
+     .dia-itinerario-diseñado-item .botones-dia button:first-child {
+        margin-left: 0;
+    }
+
 }
 
 @media (max-width: 480px) {
     body {
-        font-size: 15px; /* Slightly smaller base font for very small devices */
+        /* padding-top: ajustado en 768px, podría necesitar más si el contenido del nav crece mucho */
+        font-size: 15px;
     }
 
-    header h1 {
-        font-size: 1.5em;
+    h1 { font-size: 1.6em; } /* Reducir un poco más los H1 */
+    h2 { font-size: 1.4em; }
+    h3 { font-size: 1.15em; }
+
+    .modal-descripcion-contenido {
+        padding: 20px 15px; /* Menos padding horizontal en modal */
+        max-width: 95%;
+        width: 95%;
+    }
+    .modal-descripcion-contenido button {
+        width: calc(50% - 5px); /* Botones del modal al 50% con pequeño margen */
+        margin-right: 5px;
+        box-sizing: border-box;
+    }
+    .modal-descripcion-contenido button:last-child{
+        margin-right: 0;
     }
 
-    section h2 {
-        font-size: 1.3em;
+
+    #gasto_formulario button[type="submit"],
+    #formulario_diseno_itinerario button[type="submit"],
+    #login_formulario button[type="submit"],
+    #cambiar_username_formulario button[type="submit"],
+    #cambiar_password_formulario button[type="submit"] {
+        padding: 12px 15px; /* Padding ligeramente ajustado para botones principales */
     }
 
-    section h3 {
-        font-size: 1.1em;
+    .gasto_item_acciones {
+        flex-direction: column; /* Apilar botones de acciones en gasto_item */
+        align-items: stretch; /* Estirar botones */
+    }
+    .gasto_item_acciones button {
+        width: 100%;
+        margin-left: 0; /* Resetear margen izquierdo */
+        margin-bottom: 8px; /* Espacio entre botones apilados */
+    }
+    .gasto_item_acciones button:last-child {
+        margin-bottom: 0;
     }
 
-    #expense-form button[type="submit"] {
-        padding: 10px 15px;
+    .dia-itinerario-diseñado-item .botones-dia {
+        flex-direction: column; /* Apilar botones en diseñador */
+        align-items: stretch;
+    }
+    .dia-itinerario-diseñado-item .botones-dia button {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 8px;
+    }
+    .dia-itinerario-diseñado-item .botones-dia button:last-child {
+        margin-bottom: 0;
     }
 }
 

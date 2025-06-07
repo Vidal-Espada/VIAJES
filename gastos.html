@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Gastos - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div id="barra-navegacion-contenedor"></div>
+
+    <main>
+        <section id="gastos_seccion">
+            <h2>Gestor de Gastos</h2>
+
+            <article>
+                <h3>Añadir Nuevo Gasto</h3>
+                <form id="gasto_formulario">
+                    <div>
+                        <label for="gasto_descripcion">Descripción:</label>
+                        <input type="text" id="gasto_descripcion" name="gasto_descripcion" required>
+                    </div>
+                    <div>
+                        <label for="gasto_cantidad">Cantidad (&euro;):</label>
+                        <input type="number" id="gasto_cantidad" name="gasto_cantidad" required step="0.01" min="0.01">
+                    </div>
+                    <div>
+                        <label for="gasto_categoria">Categoría:</label>
+                        <select id="gasto_categoria" name="gasto_categoria">
+                            <option value="Viajes">Viajes</option>
+                            <option value="Comidas">Comidas</option>
+                            <option value="Entradas">Entradas y Tickets</option>
+                            <option value="Alojamiento">Alojamiento</option>
+                            <option value="Souvenirs">Souvenirs</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="gasto_pagado_por">Pagado por:</label>
+                        <input type="text" id="gasto_pagado_por" name="gasto_pagado_por" placeholder="Introduce el nombre" required>
+                    </div>
+                    <button type="submit">Añadir Gasto</button>
+                </form>
+            </article>
+
+            <article>
+                <h3>Todos los Gastos</h3>
+                <div id="lista_gastos" aria-live="polite">
+                    <p>No hay gastos añadidos aún.</p>
+                    <!-- Los gastos se listarán aquí mediante JavaScript -->
+                </div>
+            </article>
+
+            <article>
+                <h3>Resumen de Gastos y Liquidación</h3>
+                <div id="resumen_gastos" aria-live="polite">
+                    <p>El resumen de gastos y quién debe a quién se mostrará aquí.</p>
+                    <!-- El resumen se calculará y mostrará aquí mediante JavaScript -->
+                </div>
+            </article>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
+    </footer>
+    <script src="script.js" defer></script>
+</body>
+</html>

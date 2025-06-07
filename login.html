@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Asistente de Viajes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div id="barra-navegacion-contenedor"></div>
+
+    <main>
+        <section id="login_seccion">
+            <h1>Iniciar Sesión</h1>
+            <form id="login_formulario">
+                <div>
+                    <label for="login_username">Usuario:</label>
+                    <input type="text" id="login_username" name="login_username" required>
+                </div>
+                <div>
+                    <label for="login_password">Contraseña:</label>
+                    <input type="password" id="login_password" name="login_password" required>
+                </div>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <p id="login_mensaje_error" class="mensaje-error" style="display:none;"></p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Asistente de Viajes a Bélgica</p>
+    </footer>
+    <script>
+        // Script específico para la página de login
+        document.addEventListener('DOMContentLoaded', () => {
+            // La redirección si ya está logueado la maneja auth.js
+            // if (isLoggedIn()) {
+            //     window.location.href = 'index.html';
+            //     return; // Evitar que se procese el formulario si ya está redirigiendo
+            // }
+
+            const formularioLogin = document.getElementById('login_formulario');
+            const mensajeErrorLogin = document.getElementById('login_mensaje_error');
+
+            if (formularioLogin) {
+                formularioLogin.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const username = document.getElementById('login_username').value;
+                    const password = document.getElementById('login_password').value;
+
+                    if (login(username, password)) {
+                        window.location.href = 'index.html';
+                    } else {
+                        if(mensajeErrorLogin) {
+                            mensajeErrorLogin.textContent = 'Usuario o contraseña incorrectos.';
+                            mensajeErrorLogin.style.display = 'block';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

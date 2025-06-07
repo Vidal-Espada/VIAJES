@@ -1,0 +1,456 @@
+/* Basic styling for the Belgium Travel Assistant */
+
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #3498db; /* A shade of blue */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    background-color: #2980b9; /* A darker shade of blue */
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+nav ul li a:hover {
+    background-color: #3498db;
+    border-radius: 5px;
+}
+
+main {
+    padding: 20px;
+}
+
+section {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+section h2 {
+    color: #3498db;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+    margin-top: 0; /* Remove default top margin for h2 in section */
+}
+
+section h3 {
+    color: #2980b9; /* Slightly darker blue for sub-subheadings */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* =========================================
+   Itinerary Section Styles
+   ========================================= */
+
+/* Styling for itinerary day (dynamically generated article) */
+.itinerary-day { /* This class is applied to article elements by JS */
+    border: 1px solid #e0e0e0;
+    padding: 15px; /* Increased padding */
+    margin-bottom: 15px; /* Increased margin */
+    border-radius: 5px; /* Consistent with section radius */
+    background-color: #fdfdfd; /* Slightly off-white */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+.itinerary-day h3 { /* Date */
+    color: #3498db; /* Theme blue */
+    font-size: 1.2em; /* Slightly larger */
+    margin-top: 0;
+    margin-bottom: 8px; /* Space below date */
+    border-bottom: none; /* Override general section h3 style if needed for this specific h3 */
+}
+
+.itinerary-day p { /* City and Description */
+    margin: 5px 0;
+    font-size: 1em; /* Standardized font size */
+    line-height: 1.6; /* Improved readability */
+}
+
+/* =========================================
+   Transportation Section Styles
+   ========================================= */
+
+#transportation ul { /* General tips list */
+    list-style-type: disc;
+    margin-left: 20px; /* Standard indent */
+    padding-left: 15px; /* Padding for bullets */
+}
+
+#transportation ul li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* Example schedule box */
+.example-schedule {
+    background-color: #e9f5ff; /* Light blue background */
+    border: 1px dashed #3498db; /* Dashed blue border */
+    padding: 15px;
+    margin-top: 15px; /* Consistent margin */
+    border-radius: 5px; /* Consistent with section radius */
+}
+
+.example-schedule p {
+    margin: 8px 0; /* More spacing for readability */
+}
+
+.example-schedule strong {
+    color: #2980b9; /* Darker theme blue */
+}
+
+/* =========================================
+   Tourist Information Section Styles
+   ========================================= */
+
+#tourist-info .attractions-list { /* UL element */
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 0; /* Remove default padding */
+}
+
+/* Individual attraction item (LI element) */
+#tourist-info .attractions-list li {
+    background-color: #fdfdfd; /* Consistent with itinerary items */
+    border: 1px solid #e0e0e0;
+    padding: 15px; /* Increased padding */
+    margin-bottom: 15px; /* Increased margin */
+    border-radius: 5px; /* Consistent radius */
+    line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+#tourist-info .attractions-list li strong { /* Attraction name */
+    color: #3498db; /* Theme blue for attraction names */
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em; /* Slightly larger */
+}
+
+/* =========================================
+   Expense Tracker Section Styles
+   ========================================= */
+
+/* Form styling */
+#expense-form div { /* Wrapper for label + input */
+    margin-bottom: 12px; /* Increased space between form fields */
+}
+
+#expense-form label {
+    display: block;
+    margin-bottom: 6px; /* Increased space below label */
+    font-weight: bold;
+    color: #444; /* Slightly darker for better contrast */
+}
+
+#expense-form input[type="text"],
+#expense-form input[type="number"],
+#expense-form select {
+    width: 100%;
+    padding: 10px;
+    /* margin-bottom is handled by the parent div's margin-bottom */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Consistent radius */
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+#expense-form input[type="number"] {
+    /* Specific for number input if needed, e.g. appearance for spinner */
+}
+
+#expense-form select {
+    cursor: pointer;
+}
+
+#expense-form button[type="submit"] {
+    background-color: #2ecc71; /* Green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px; /* Consistent radius */
+    cursor: pointer;
+    font-size: 1.05em; /* Slightly larger */
+    transition: background-color 0.2s ease-in-out;
+    /* width: 100%; Full width handled by media query for smaller screens */
+    display: block; /* Allows margin auto for centering if not full width */
+    margin: 10px auto 0; /* Centering for larger screens, top margin */
+    min-width: 200px; /* Minimum width for larger screens */
+}
+
+#expense-form button[type="submit"]:hover {
+    background-color: #27ae60; /* Darker green */
+}
+
+/* Containers for expense list and summary (article > div) */
+#expense-list, #expense-summary {
+    padding: 15px;
+    margin-top: 25px; /* Increased margin from form/previous section */
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Consistent radius */
+    background-color: #f9f9f9; /* Light grey background for these areas */
+}
+
+/* Placeholder text style (direct child p of the list/summary div) */
+#expense-list > p:first-child,
+#expense-summary > p:first-child {
+    color: #777;
+    font-style: italic;
+    text-align: center; /* Center placeholder text */
+    padding: 20px 0; /* Add some padding to placeholder */
+}
+
+/* Expense summary distinct styling */
+#expense-summary {
+    background-color: #e9f5ff; /* Light blue, distinct from list */
+    border-color: #aed6f1; /* Softer blue for border */
+}
+
+/* Dynamically added expense items list (UL) */
+.expenses-ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* Individual expense item (LI) */
+.expense-item { /* This class is applied to article elements (LI) by JS */
+    background-color: #fff; /* White background for each item */
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px; /* Adjusted padding */
+    margin-bottom: 12px; /* Adjusted margin */
+    border-radius: 5px; /* Consistent radius */
+    display: flex;
+    flex-direction: column; /* Stack header and body */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+.expense-item:last-child {
+    margin-bottom: 0; /* No margin for the last item in the list */
+}
+
+.expense-item-header {
+    display: flex;
+    justify-content: space-between; /* Puts description/category left, future buttons right */
+    align-items: center; /* Vertically align items if they wrap */
+    font-size: 1.05em; /* Slightly adjusted */
+    margin-bottom: 8px; /* Space between header and body */
+}
+
+.expense-item-header .expense-description-category {
+    flex-grow: 1; /* Allow text to take available space */
+}
+.expense-item-header .expense-description-category strong { /* Description */
+    color: #333;
+}
+.expense-item-header .expense-description-category .category-tag { /* Category */
+    font-size: 0.85em;
+    color: #777;
+    margin-left: 8px;
+    background-color: #eee;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Placeholder for delete button, not yet functional */
+.expense-item-header .delete-btn-placeholder {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    margin-left: 10px; /* Space from the text content */
+}
+.expense-item-header .delete-btn-placeholder:hover {
+    background-color: #c0392b;
+}
+
+
+.expense-item-body {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95em;
+    color: #555;
+}
+.expense-item-body .amount { /* Amount span */
+    font-weight: bold;
+    color: #2c3e50; /* Darker, neutral color */
+}
+.expense-item-body .paid-by { /* Paid by span */
+    /* Additional styling if needed */
+}
+
+/* Styling for summary section text elements */
+#expense-summary p,
+#expense-summary ul {
+    margin-bottom: 10px; /* Consistent spacing for text blocks */
+}
+#expense-summary strong { /* General strong tags in summary, e.g., "Overall Total Expenses:" */
+    color: #2980b9; /* Darker theme blue */
+}
+
+#expense-summary ul { /* Lists within summary (payers, settlement) */
+    list-style-type: disc; /* Use disc for payer list and settlement */
+    margin-left: 20px;
+    padding-left: 15px; /* Padding for bullets */
+}
+
+#expense-summary ul li {
+    margin-bottom: 6px; /* Spacing for list items */
+}
+
+.owed-amount {
+    color: #27ae60; /* Green for owed */
+    font-weight: bold;
+}
+
+/* =========================================
+   General Element Styling (Body, Footer)
+   ========================================= */
+/* Basic body styling is at the top */
+/* Footer styling is near the end */
+
+/* =========================================
+   Header and Navigation
+   ========================================= */
+/* Header and Nav styling are near the top */
+
+/* =========================================
+   Main Content & Sections
+   ========================================= */
+/* Main and Section general styling */
+
+/* =========================================
+   Media Queries for Basic Responsiveness
+   ========================================= */
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        padding: 10px;
+    }
+
+    nav ul li {
+        display: block; /* Stack navigation links vertically */
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    nav ul li a {
+        display: block; /* Make links take full width for easier tapping */
+        padding: 8px;
+    }
+
+    section {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    #expense-form input[type="text"],
+    #expense-form input[type="number"],
+    #expense-form select,
+    #expense-form button[type="submit"] {
+        padding: 12px; /* Slightly larger padding for touch */
+        font-size: 1em; /* Ensure font size is not too small on mobile */
+    }
+
+    #expense-form button[type="submit"] {
+        width: 100%; /* Make button full width */
+        margin-top: 10px; /* Add some space above full-width button */
+    }
+
+    /* Adjust flex direction for stacked items on mobile */
+    .itinerary-day,
+    .expense-item {
+        flex-direction: column;
+    }
+    .expense-item-header,
+    .expense-item-body {
+        flex-direction: column; /* Stack content within expense items */
+        align-items: flex-start;
+    }
+
+    .expense-item-header strong,
+    .expense-item-body span,
+    .itinerary-day h3,
+    .itinerary-day p {
+        margin-bottom: 5px; /* Space out stacked items */
+    }
+    .expense-item-header .expense-description-category .category-tag {
+        display: inline-block;
+        margin-top: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 15px; /* Slightly smaller base font for very small devices */
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    section h2 {
+        font-size: 1.3em;
+    }
+
+    section h3 {
+        font-size: 1.1em;
+    }
+
+    #expense-form button[type="submit"] {
+        padding: 10px 15px;
+    }
+}
+
+.owes-amount {
+    color: #c0392b; /* Red for owes */
+    font-weight: bold;
+}
